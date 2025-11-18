@@ -12,9 +12,24 @@ if (argv.length !== 2) {
 
 const rawDest = directory;
 
-const looksLikeDir =
-  rawDest.endsWith(path.sep) ||
-  (fs.existsSync(rawDest) && fs.statSync(rawDest).isDirectory());
+const endsWithSep = rawDest.endsWith(path.sep) || rawDest.endsWith('/');
+let isDir;
+
+try {
+  const destExists = fs.existsSync(rawDest);
+
+  if (destExists) {
+    const destStat = fs.statSync(rawDest);
+    isDir = destStat.isDirectory();
+  } else {
+    isDir = false;
+  }
+} catch (error) {
+  console.error(error);
+  process.exit(1)
+}
+
+const looksLikeDir = endsWithSep || isDir;
 
 try {
   const stats = fs.statSync(file);

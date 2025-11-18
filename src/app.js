@@ -20,13 +20,15 @@ try {
 
   if (destExists) {
     const destStat = fs.statSync(rawDest);
+
     isDir = destStat.isDirectory();
   } else {
     isDir = false;
   }
 } catch (error) {
+  /* eslint-disable-next-line no-console */
   console.error(error);
-  process.exit(1)
+  process.exit(1);
 }
 
 const looksLikeDir = endsWithSep || isDir;
